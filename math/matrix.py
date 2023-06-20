@@ -1,3 +1,5 @@
+from random import uniform
+
 class Matrix:
     def __init__(self, rows, cols):
         self.rows = rows
@@ -9,12 +11,27 @@ class Matrix:
             for j in range(self.cols):
                 self.values[i][j] = 0
 
-    def multiply(self, n):
+    def randomize(self, n):
         for i in range(self.rows):
             for j in range(self.cols):
-                self.values[i][j] *= n
+                self.values[i][j] = uniform(0, 10)
+
+    def multiply(self, n):
+        if isinstance(n, Matrix):
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.values[i][j] *= n.values[i][j]
+        else:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.values[i][j] *= n
 
     def add(self, n):
-        for i in range(self.rows):
-            for j in range(self.cols):
-                self.values[i][j] += n
+        if isinstance(n, Matrix):
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.values[i][j] += n.values[i][j]
+        else:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.values[i][j] += n
