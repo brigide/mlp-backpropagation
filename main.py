@@ -1,9 +1,6 @@
 from neural_network import NeuralNetwork
 from matrix import Matrix
 
-def doubleIt(x):
-    return x * 2
-
 def main():
     neural_network = NeuralNetwork(2, 2, 1)
     input = [1, 0]
