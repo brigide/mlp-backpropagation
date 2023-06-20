@@ -8,10 +8,27 @@ class Matrix:
         self.cols = cols
         self.data = [[0 for col in range(cols)] for row in range(rows)]
 
+    @staticmethod
+    def from_array(array):
+        m = Matrix(len(array), 1)
+        for i in range(len(array)):
+            m.data[i][0] = array[i]
+
+        return m
+    
+    def to_array(self):
+        array = []
+        for i in range(self.rows):
+            for j in range(self.cols):
+                array.append(self.data[i][j])
+
+        return array
+
+
     def randomize(self):
         for i in range(self.rows):
             for j in range(self.cols):
-                self.data[i][j] = uniform(0, 10)
+                self.data[i][j] = uniform(-1, 1)
 
 
     @staticmethod

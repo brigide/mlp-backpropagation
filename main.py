@@ -5,13 +5,11 @@ def doubleIt(x):
     return x * 2
 
 def main():
-    NeuralNetwork(1, 2, 4, 5, 3)
-    m1 = Matrix(2, 2)
-    m1.randomize()
-    m1.log()
-    m1.map(doubleIt)
-    m1.log()
+    neural_network = NeuralNetwork(2, 2, 1)
+    input = [1, 0]
+    output = neural_network.feed_forward(input)
 
+    print(output)
 
 
 if __name__ == '__main__':
