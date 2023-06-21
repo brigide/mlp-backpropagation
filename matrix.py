@@ -55,6 +55,21 @@ class Matrix:
                 self.data[i][j] *= n
 
     @staticmethod
+    def subtract(m, n):
+        # scalar
+        for i in range(m.rows):
+            for j in range(m.cols):
+                m.data[i][j] -= n.data[i][j]
+
+        return m
+
+    def multiply_hamard(self, n):
+        # element wise
+        for i in range(self.rows):
+            for j in range(self.cols):
+                self.data[i][j] *= n.data[i][j]
+
+    @staticmethod
     def transpose(m):
         result = Matrix(m.cols, m.rows)
         for i in range(m.rows):
@@ -82,5 +97,31 @@ class Matrix:
                 val = self.data[i][j]
                 self.data[i][j] = fn(val)
 
+    @staticmethod
+    def static_map(m, fn):
+        matrix = Matrix(m.rows, m.cols)
+        # apply a function to every element of the matrix
+        for i in range(m.rows):
+            for j in range(m.cols):
+                val = m.data[i][j]
+                matrix.data[i][j] = fn(val)
+
+        return matrix
+
     def log(self):
-        print(np.matrix(self.data))
+
+        # Do heading
+        print("     ", end="")
+        for j in range(len(self.data[0])):
+            print("%5d " % j, end="")
+        print()
+        print("     ", end="")
+        for j in range(len(self.data[0])):
+            print("------", end="")
+        print()
+        # Matrix contents
+        for i in range(len(self.data)):
+            print("%3d |" % (i), end="") # Row nums
+            for j in range(len(self.data[0])):
+                print("%.2f " % (self.data[i][j]), end="")
+            print()  

@@ -33,37 +33,60 @@ class NeuralNetwork:
         self.bias_ho = Matrix(self.output_nodes, 1)
         self.bias_ho.randomize()
 
-    def feed_forward(self, input_array):
 
-        inputs = Matrix.from_array(input_array)
-
-        inputs.log()
-        self.weights_ih.log()
-
-        # input to hidden
-        first_hidden = Matrix.multiply_matrix(self.weights_ih, inputs)
-        first_hidden.add(self.bias_h[0])
-
-        first_hidden.map(NeuralNetwork.sigmoid) # activation function
-
-
-        # hidden layers
-        current_layer = first_hidden
-        for i in range(self.hidden_layers)[1:]:
-            next_layer = Matrix.multiply_matrix(self.weights_h[i], current_layer)
-            next_layer.add(self.bias_h[i])
-            next_layer.map(NeuralNetwork.sigmoid)
-            current_layer = next_layer
-
-        # last hidden to output
-        output_layer = Matrix.multiply_matrix(self.weights_ho, current_layer)
-        output_layer.add(self.bias_ho)
-
-        output_layer.map(NeuralNetwork.sigmoid)
-
-        return output_layer.to_array()
-
+        self.learning_rate = 0.1
 
     @staticmethod
     def sigmoid(x):
         return 1 / (1 + math.e ** -x)
+    
+    @staticmethod
+    def derivative_sigmoid(y):
+        return y * (1 - y)
+    
+
+    def train(self, input_array, target_array):
+        # get hidden outputs
+        inputs = Matrix.from_array(input_array)
+        targets = Matrix.from_array(target_array)
+        hidden = Matrix.multiply_matrix(self.weights_ih, inputs)
+        # activation funciton
+        hidden.map(self.sigmoid)
+
+
+        # get outputs
+        outputs = Matrix.multiply_matrix(self.weights_ho, hidden)
+        outputs.map(self.sigmoid)
+
+
+
+        # get error
+        # error = target - output
+        output_errors = Matrix.subtract(targets, outputs)
+
+        # get gradient
+        # gradient = o * (1 - o)
+        gradient = Matrix.static_map(outputs, NeuralNetwork.derivative_sigmoid)
+        gradient.multiply_hamard(output_errors)
+        gradient.multiply_scalar(self.learning_rate)
+
+        # calculate deltas
+        hidden_t = Matrix.transpose(hidden)
+        delta_w_ho = Matrix.multiply_matrix(gradient, hidden_t)
+
+        # adjust weights based on delta
+        self.weights_ho.add(delta_w_ho)
+
+
+        # now for hidden layer
+        weight_ho_t = Matrix.transpose(self.weights_ho)
+        hidden_errors = Matrix.multiply_matrix(weight_ho_t, output_errors)
+
+        hidden_gradient = Matrix.static_map(hidden, NeuralNetwork.derivative_sigmoid)
+        hidden_gradient.multiply_hamard(hidden_errors)
+        hidden_gradient.multiply_scalar(self.learning_rate)
+
+        input_t = Matrix.transpose(inputs)
+        delta_w_ih = Matrix.multiply_matrix(hidden_gradient, input_t)
+
+        self.weights_ih.add(delta_w_ih)
