@@ -1,21 +1,36 @@
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn import preprocessing
+from mlp import MLP
 from neural_network import NeuralNetwork
-from matrix import Matrix
-from random import randint
+
+
+def normalize_target(y):
+    arr = []
+    for i in range(len(y)):
+        arr.append(y[i]/ 2)
+    return arr
+
 
 def main():
-    neural_network = NeuralNetwork(2, 2, 1)
-    inputs = [[1, 0], [0, 1], [1, 1], [0, 0]]
-    targets = [[1], [1], [0], [0]]
+    iris = datasets.load_iris()
+    x, y = iris.data, iris.target
 
-    for i in range(100000):
-        idx = randint(0, 3)
-        neural_network.train(inputs[idx], targets[idx])
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=42)
 
-    print(neural_network.predict([1, 0]))
-    print(neural_network.predict([1, 1]))
-    print(neural_network.predict([0, 1]))
-    print(neural_network.predict([0, 0]))
+    y_train = normalize_target(y_train)
+    y_test = normalize_target(y_test)
 
+    iris_1 = MLP(NeuralNetwork(4, 4, 1))
+    iris_1.train(x_train, y_train, 5000)
+    acc1 = iris_1.test(x_test, y_test)
+
+    iris_2 = MLP(NeuralNetwork(4, 4, 3, 1))
+    iris_2.train(x_train, y_train, 5000)
+    acc2 = iris_2.test(x_test, y_test)
+
+    print(f'1 hidden layer with 4 nodes:             {acc1}')
+    print(f'2 hidden layer with 4 nodes and 3 nodes: {acc2}')
 
 
 if __name__ == '__main__':

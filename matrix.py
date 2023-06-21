@@ -16,6 +16,13 @@ class Matrix:
 
         return m
     
+    @staticmethod
+    def from_number(n):
+        m = Matrix(1, 1)
+        m.data[0][0] = n
+
+        return m
+    
     def to_array(self):
         array = []
         for i in range(self.rows):

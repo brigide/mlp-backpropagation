@@ -8,7 +8,7 @@ class NeuralNetwork:
             first argument being number of inputs
             middle arguments being hidden layers number of nodes,
             last being number of outputs"""
-        if len(arg) <= 2:
+        if len(arg) < 2:
             return 'at least 2 arguments are necessary'
         
         self.input_nodes = arg[1]
