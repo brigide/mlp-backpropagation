@@ -11,7 +11,7 @@ class NeuralNetwork:
         if len(arg) < 2:
             return 'at least 2 arguments are necessary'
         
-        self.input_nodes = arg[1]
+        self.input_nodes = arg[0]
         self.output_nodes = arg[-1]
 
         self.hidden_nodes = [n for n in arg[1:-1]]
@@ -42,7 +42,6 @@ class NeuralNetwork:
 
         for b in self.biases:
             b.randomize()
-         
 
         self.learning_rate = 0.1
 
@@ -87,6 +86,11 @@ class NeuralNetwork:
 
             # get gradient
             gradient = Matrix.static_map(steps[i], NeuralNetwork.derivative_sigmoid)
+
+            # gradient.log()
+            # errors.log()
+            # targets.log()
+        
             gradient.multiply_hamard(errors)
             gradient.multiply_scalar(self.learning_rate)
 
@@ -96,6 +100,6 @@ class NeuralNetwork:
 
             # adjust weights
             self.weights[i - 1].add(delta)
-            self.biases[i - 1].add(gradient)
+            #self.biases[i - 1].add(gradient)
 
             i -= 1

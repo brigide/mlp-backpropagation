@@ -21,7 +21,7 @@ def main():
     y_train = normalize_target(y_train)
     y_test = normalize_target(y_test)
 
-    iris_1 = MLP(NeuralNetwork(4, 4, 1))
+    iris_1 = MLP(NeuralNetwork(4, 3, 1))
     iris_1.train(x_train, y_train, 5000)
     acc1 = iris_1.test(x_test, y_test)
 
