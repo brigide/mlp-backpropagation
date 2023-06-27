@@ -73,7 +73,7 @@ class NeuralNetwork:
     def train(self, input_array, target_array):
         """Backpropagation algorithm"""
         steps = self.feed_forward(input_array)
-        targets = Matrix.from_array(target_array)
+        targets = Matrix.from_array(target_array[0])
 
         i = len(steps) - 1
         while i >= 1:
@@ -100,6 +100,6 @@ class NeuralNetwork:
 
             # adjust weights
             self.weights[i - 1].add(delta)
-            #self.biases[i - 1].add(gradient)
+            self.biases[i - 1].add(gradient)
 
             i -= 1

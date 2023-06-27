@@ -21,3 +21,6 @@ class MLP:
                 acc += 1
 
         return f'{(100 * acc) / (len(targets))}%'
+    
+    def predict(self, inputs):
+        return self.nn.predict(inputs)

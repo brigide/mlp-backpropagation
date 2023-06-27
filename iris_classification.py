@@ -33,5 +33,4 @@ def main():
     print(f'2 hidden layer with 4 nodes and 3 nodes: {acc2}')
 
 
-if __name__ == '__main__':
-    main()
+main()
